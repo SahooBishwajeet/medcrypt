@@ -12,63 +12,90 @@ from cryptography.hazmat.primitives import serialization
 def parse_arguments():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="MedCrypt : Hybrid Cryptography-Steganography System"
+        description="MedCrypt: Hybrid Cryptography-Steganography System for Secure Medical Data Transmission",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""Use python main.py {encrypt, decrypt, genkeys} -h for more help specific to each command""",
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Commands")
 
     # Encrypt command
     encrypt_parser = subparsers.add_parser(
-        "encrypt", help="Encrypt a message and hide it in an image"
+        "encrypt",
+        help="Encrypt a message and hide it in an image",
+        description="Encrypts a message with AES+RSA and hides it in an image using DWT steganography",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Example: python main.py encrypt -m message.txt -i cover.png -o stego.png -k public_key.pem",
     )
     encrypt_parser.add_argument(
-        "-m", "--message", required=True, help="Message file to encrypt"
+        "-m", "--message", required=True, help="Path to the message file to encrypt"
     )
     encrypt_parser.add_argument(
-        "-i", "--image", required=True, help="Cover image to hide data in"
+        "-i", "--image", required=True, help="Path to the cover image to hide data in"
     )
     encrypt_parser.add_argument(
-        "-o", "--output", required=True, help="Output stego image filename"
+        "-o", "--output", required=True, help="Path to save the output stego image"
     )
     encrypt_parser.add_argument(
-        "-k", "--key", required=True, help="RSA public key file"
+        "-k", "--key", required=True, help="Path to the RSA public key file (.pem)"
     )
     encrypt_parser.add_argument(
         "-a",
         "--alpha",
         type=float,
         default=0.1,
-        help="Embedding strength (default: 0.1)",
+        help="Embedding strength factor (default: 0.1, range: 0.05-0.2)",
     )
 
     # Decrypt command
     decrypt_parser = subparsers.add_parser(
-        "decrypt", help="Extract and decrypt a hidden message"
+        "decrypt",
+        help="Extract and decrypt a hidden message",
+        description="Extracts hidden data from a stego image and decrypts it",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Example: python main.py decrypt -i stego.png -o recovered.txt -k private_key.pem",
     )
     decrypt_parser.add_argument(
-        "-i", "--image", required=True, help="Stego image containing hidden data"
+        "-i",
+        "--image",
+        required=True,
+        help="Path to the stego image containing hidden data",
     )
     decrypt_parser.add_argument(
-        "-o", "--output", required=True, help="Output file for decrypted message"
+        "-o", "--output", required=True, help="Path to save the decrypted output file"
     )
     decrypt_parser.add_argument(
-        "-k", "--key", required=True, help="RSA private key file"
+        "-k", "--key", required=True, help="Path to the RSA private key file (.pem)"
     )
     decrypt_parser.add_argument(
         "-a",
         "--alpha",
         type=float,
         default=0.1,
-        help="Embedding strength (default: 0.1)",
+        help="Embedding strength factor used during encryption (default: 0.1)",
     )
 
     # Generate keys command
-    keys_parser = subparsers.add_parser("genkeys", help="Generate RSA key pair")
-    keys_parser.add_argument(
-        "-o", "--output", required=True, help="Output directory for keys"
+    keys_parser = subparsers.add_parser(
+        "genkeys",
+        help="Generate RSA key pair",
+        description="Generates a new RSA public/private key pair for encryption and decryption",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Example: python main.py genkeys -o keys -s 2048",
     )
     keys_parser.add_argument(
-        "-s", "--size", type=int, default=2048, help="Key size in bits (default: 2048)"
+        "-o",
+        "--output",
+        required=True,
+        help="Directory path to save the generated keys",
+    )
+    keys_parser.add_argument(
+        "-s",
+        "--size",
+        type=int,
+        default=2048,
+        choices=[1024, 2048, 3072, 4096],
+        help="Key size in bits (default: 2048, options: 1024, 2048, 3072, 4096)",
     )
 
     return parser.parse_args()
