@@ -1,0 +1,5 @@
+numpy
+pywavelets
+opencv-python
+cryptography
+Pillow
