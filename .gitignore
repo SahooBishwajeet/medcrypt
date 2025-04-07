@@ -75,3 +75,8 @@ docs/_build/
 
 # PyBuilder
 .pybuilder/
+
+
+/venv
+/private_key.pem
+/public_key.pem
