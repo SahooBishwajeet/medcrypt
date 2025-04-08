@@ -2,6 +2,8 @@ import os
 import cv2
 import csv
 import numpy as np
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from main import encrypt_and_hide
 
 # Function to calculate Mean Squared Error (MSE)
@@ -69,10 +71,10 @@ def get_message_length(text_path):
         return os.path.getsize(text_path)
 
 # Paths
-cover_image_path = "test/in/medical_image.png"
-public_key_path = "./public_key.pem"
-input_dir = "test_texts"
-output_dir = "test_out"
+cover_image_path = "./in/medical_image.png"
+public_key_path = "../public_key.pem"
+input_dir = "./test_texts"
+output_dir = "./test_out"
 csv_file_path = "assessment_metrics.csv"
 
 # Create output directory if it doesn't exist
