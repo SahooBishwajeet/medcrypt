@@ -28,6 +28,9 @@ MedCrypt is a hybrid cryptography and steganography system designed specifically
 - PyWavelets (pywt)
 - OpenCV (cv2)
 - cryptography
+- PyWavelets (pywt)
+- OpenCV (cv2)
+- cryptography
 
 ## Installation
 
@@ -79,6 +82,23 @@ Parameters:
 
 ### Extract & Decrypt Data
 
+
+Extract hidden data from a stego image and decrypt it:
+
+```bash
+python main.py decrypt -i stego_image.png -o extracted_message.txt -k path_to_private_key.pem
+```
+
+Parameters:
+
+- `-i, --image`: Path to the stego image from which the message will be extracted.
+- `-o, --output`: Path to the output file where the extracted message will be saved.
+- `-k, --key`: Path to the private key file for decryption.
+- `-a, --alpha`: (Optional) Embedding strength (default is 0.1). Higher values may reduce image quality.
+
+## Best Practices
+
+- Always use PNG format for stego images to avoid lossy compression.
 Extract hidden data from a stego image and decrypt it:
 
 ```bash
